@@ -1,0 +1,1029 @@
+/* ============================================
+   Markdown Studio Mobile Styles
+   Revolutionary mobile collaborative experience
+   ============================================ */
+
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f1c1c 0%, #162626 100%);
+  color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+/* Hide desktop UI elements but keep essential modals */
+.site-nav,
+.header,
+.header-actions,
+.footer,
+.pane-controls,
+.char-count,
+.format-toolbar,
+.cheat-sheet,
+.cheat-sheet-toggle,
+#templatesModal,
+#copyModal,
+#createRoomModal,
+#joinRoomModal,
+.desktop-folder-panel,
+#desktopFolderPanel,
+#desktopFolderTree {
+  display: none;
+}
+
+/* Keep import/export modals visible on mobile */
+#exportModal,
+#importModal {
+  display: none; /* Will be shown when triggered */
+}
+
+/* Mobile Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal h3 {
+  color: #00ff88;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+/* Removed close button - using cancel button instead */
+
+.modal-content button {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 16px;
+  font-size: 0.95em;
+  border-radius: 8px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.2s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-content button:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.modal-content button strong {
+  font-weight: 600;
+}
+
+.modal-content button small {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.modal-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+}
+
+.modal-actions button {
+  background: #333 !important;
+  color: #ccc !important;
+}
+
+/* Container - Full Screen App */
+.container {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Mobile View Toggle - Hamburger menu removed per user request */
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Editor and Preview Panes */
+.editor-pane,
+.preview-pane {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Mobile view switching */
+.mobile-editor-only .preview-pane {
+  display: none;
+}
+
+.mobile-preview-only .editor-pane {
+  display: none;
+}
+
+/* Simplified Pane Headers */
+.pane-header {
+  background: #111;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  color: #00ff88;
+  border-bottom: 1px solid #1a2a2a;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.pane-header span {
+  font-weight: 600;
+}
+
+/* Mobile Editor */
+.editor-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px; /* Prevent iOS zoom */
+  line-height: 1.6;
+  border: 2px solid #222;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  resize: none;
+  outline: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+.editor-textarea:focus {
+  border-color: #00ff88;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
+/* Mobile Preview */
+.preview-content {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 1.6;
+  background: linear-gradient(135deg, #0f1c1c 0%, #162626 100%);
+  border: 1px solid #1a2a2a;
+  border-radius: 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+/* Mobile-optimized markdown rendering */
+.preview-content h1 { font-size: 1.8em; margin: 0 0 16px 0; }
+.preview-content h2 { font-size: 1.5em; margin: 0 0 14px 0; }
+.preview-content h3 { font-size: 1.3em; margin: 0 0 12px 0; }
+.preview-content h4 { font-size: 1.1em; margin: 0 0 10px 0; }
+
+.preview-content p { margin-bottom: 16px; }
+.preview-content ul, .preview-content ol { margin-bottom: 16px; padding-left: 20px; }
+.preview-content li { margin-bottom: 8px; }
+
+.preview-content code {
+  background: rgba(0, 255, 136, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #00ff88;
+}
+
+.preview-content pre {
+  background: linear-gradient(135deg, #0a1515 0%, #0f1c1c 100%);
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border: 1px solid #1a3535;
+}
+
+.preview-content blockquote {
+  border-left: 4px solid #00ff88;
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: #ccc;
+}
+
+/* Mobile Folder Panel (Left Side) - Exact same pattern as mobile toolbar but mirrored */
+.mobile-folder-panel {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border-right: 1px solid #333;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 16px;
+  z-index: 1001;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-folder-panel.open {
+  left: 0;
+}
+
+/* Left swipe trigger - hidden until folder mode active */
+.mobile-left-swipe-trigger {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 100vh;
+  z-index: 999;
+  background: linear-gradient(to right, rgba(78, 205, 196, 0.1), transparent);
+  transition: opacity 0.3s ease;
+}
+
+.mobile-left-swipe-trigger.active {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-left-swipe-trigger::before {
+  content: '>';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: rgba(78, 205, 196, 0.5);
+  font-weight: bold;
+}
+
+
+/* Mode Toggle Container for mobile */
+.mode-toggle-container {
+  display: flex;
+  background: #333;
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 0;
+  margin: 4px 0;
+}
+
+.folder-header {
+  padding: 20px 20px 16px 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.folder-header h3 {
+  color: #00ff88;
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close-folder-btn {
+  background: #333;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.close-folder-btn:active {
+  background: #666;
+  color: #fff;
+}
+
+.folder-actions {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.folder-actions .btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 16px 20px;
+  font-size: 1em;
+  border-radius: 12px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.folder-actions .btn:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.folder-tree {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.folder-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  text-align: center;
+}
+
+.folder-empty div {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+.folder-empty p {
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Folder Tree Items */
+.folder-path {
+  padding: 12px 0;
+  border-bottom: 1px solid #333;
+  margin-bottom: 16px;
+  color: #00ff88;
+  font-size: 0.9em;
+}
+
+.folder-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #1a1a1a;
+  border: 1px solid #333;
+}
+
+.folder-item:hover {
+  background: #2a2a2a;
+  border-color: #00ff88;
+}
+
+.folder-item:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.folder-icon,
+.file-icon {
+  margin-right: 12px;
+  font-size: 1.2em;
+}
+
+.folder-name,
+.file-name {
+  flex: 1;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.folder-item.file {
+  border-left: 3px solid #00ff88;
+}
+
+.folder-item.directory {
+  border-left: 3px solid #ffa500;
+}
+
+/* Folder bottom section for path button */
+.mobile-folder-panel .folder-bottom {
+  padding: 16px 20px;
+  border-top: 1px solid #333;
+  margin-top: auto;
+}
+
+.mobile-folder-panel .path-btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 16px 20px;
+  font-size: 1em;
+  border-radius: 12px;
+  background: #2a2a2a;
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mobile-folder-panel .path-btn:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+/* Vault Setup Dialog */
+.vault-setup-content {
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  position: relative;
+  text-align: center;
+}
+
+.vault-setup-content h2 {
+  color: #00ff88;
+  margin-bottom: 16px;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.vault-setup-content p {
+  color: #ccc;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.vault-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.vault-btn {
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #222;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 1em;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.vault-btn:hover {
+  background: #2a2a2a;
+  border-color: #00ff88;
+  transform: translateY(-2px);
+}
+
+.vault-btn.primary {
+  background: linear-gradient(135deg, #00ff88 0%, #44b3aa 100%);
+  color: #000;
+  border-color: #00ff88;
+  font-weight: 600;
+}
+
+.vault-btn.primary:hover {
+  background: linear-gradient(135deg, #5ed7ce 0%, #00ff88 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+}
+
+.vault-btn.secondary {
+  background: #1a1a1a;
+  border-color: #444;
+}
+
+.vault-btn small {
+  font-size: 0.8em;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.vault-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #333;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.vault-close:hover {
+  background: #666;
+  color: #fff;
+}
+
+/* Folder notifications */
+.folder-notification {
+  font-family: 'Inter', sans-serif;
+}
+
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Duplicate section removed - consolidated above */
+
+/* Mobile Swipe Toolbar (Right Side) */
+.mobile-toolbar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border-left: 1px solid #333;
+  box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 16px;
+  z-index: 1000;
+  transition: right 0.3s ease;
+}
+
+.mobile-toolbar.open {
+  right: 0;
+}
+
+.mobile-toolbar .btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 16px 20px;
+  font-size: 1em;
+  border-radius: 12px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mobile-toolbar .btn:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.mobile-toolbar .exit-btn {
+  margin-top: auto;
+  background: #333;
+  border-color: #444;
+}
+
+.mobile-toolbar .exit-btn:active {
+  background: #666;
+  color: #fff;
+}
+
+/* Swipe Trigger Zone */
+.mobile-swipe-trigger {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100vh;
+  z-index: 999;
+  background: linear-gradient(to left, rgba(78, 205, 196, 0.1), transparent);
+}
+
+/* Visual swipe indicator */
+.mobile-swipe-trigger::before {
+  content: '<';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: rgba(78, 205, 196, 0.5);
+  font-weight: bold;
+}
+
+/* Mobile-specific utilities */
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 40px;
+}
+
+/* ============================================
+   NEW UNIFIED INTERFACE STYLES
+   ============================================ */
+
+/* Mode buttons for md/rich - smaller in square container */
+.mode-btn {
+  min-width: 55px !important;
+  min-height: 42px !important;
+  padding: 10px 14px !important;
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  background: #222 !important;
+  color: #ccc !important;
+  border: 1px solid #333 !important;
+  transition: all 0.2s ease !important;
+  margin: 2px !important;
+}
+
+.mode-btn.active {
+  background: #00ff88 !important;
+  color: #000 !important;
+  border-color: #00ff88 !important;
+  box-shadow: 0 0 8px rgba(78, 205, 196, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+#diff-mode-btn.active {
+  background: #00ff88 !important;
+  color: #000 !important;
+  border-color: #00ff88 !important;
+}
+
+/* Unified Editor */
+.unified-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* DIFF Interface */
+.diff-interface {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.diff-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  min-height: 0;
+}
+
+.diff-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+
+.diff-box-header {
+  background: #111;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  color: #00ff88;
+  border-bottom: 1px solid #1a2a2a;
+  font-weight: 600;
+}
+
+.diff-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 2px solid #222;
+  border-radius: 0 0 10px 10px;
+  background: #111;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  resize: none;
+  outline: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+.diff-textarea:focus {
+  border-color: #00ff88;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
+/* Visual Diff Display */
+.diff-visual {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.diff-visual-header {
+  background: #111;
+  padding: 12px 16px;
+  font-size: 1em;
+  color: #00ff88;
+  border-bottom: 1px solid #1a2a2a;
+  font-weight: 600;
+}
+
+.diff-visual-content {
+  flex: 1;
+  padding: 16px;
+  background: linear-gradient(135deg, #0f1c1c 0%, #162626 100%);
+  border: 1px solid #1a2a2a;
+  border-radius: 0 0 10px 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+.diff-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.diff-line {
+  padding: 4px 8px;
+  margin: 2px 0;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-line.added {
+  background: rgba(34, 197, 94, 0.2);
+  border-left: 4px solid #22c55e;
+}
+
+.diff-line.removed {
+  background: rgba(239, 68, 68, 0.2);
+  border-left: 4px solid #ef4444;
+}
+
+.diff-line.unchanged {
+  background: transparent;
+  color: #ccc;
+}
+
+/* Word-level highlighting within diff lines */
+.word-removed {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fef2f2;
+  padding: 2px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.word-added {
+  background: rgba(34, 197, 94, 0.3);
+  color: #f0fdf4;
+  padding: 2px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.diff-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 40px;
+}
+
+.diff-empty div {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+/* Code preview styles removed - focus on writing experience */
+
+/* Update mobile toolbar for new layout */
+.mobile-toolbar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border-left: 1px solid #333;
+  box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 16px;
+  z-index: 1001;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-toolbar.open {
+  right: 0;
+}
+
+/* Compact mobile toolbar buttons */
+.mobile-toolbar .btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mobile-toolbar .btn:active {
+  background: #00ff88;
+  color: #000;
+  transform: scale(0.98);
+}
+
+.mobile-toolbar .mode-toggle-group {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.mobile-toolbar .tips-btn {
+  margin-top: auto;
+  background: #333;
+  border-color: #444;
+  color: #ffc107;
+}
+
+/* Show cheat sheet on mobile */
+.cheat-sheet {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80vh;
+  background: #111;
+  border-top: 2px solid #00ff88;
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 1002;
+  border-radius: 20px 20px 0 0;
+}
+
+.cheat-sheet h4 {
+  color: #00ff88;
+  margin-bottom: 16px;
+  font-size: 1.2em;
+}
+
+.cheat-sheet h5 {
+  color: #ffc107;
+  margin: 16px 0 8px 0;
+  font-size: 1em;
+}
+
+.cheat-sheet button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #00ff88, #00cc66);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+}
+
+.cheat-sheet button:hover {
+  background: linear-gradient(135deg, #00cc66, #00ff88);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.5);
+}
+

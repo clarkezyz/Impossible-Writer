@@ -1,0 +1,1349 @@
+/* ============================================
+   Markdown Studio Desktop Styles
+   Clean, professional markdown editor
+   ============================================ */
+
+/* Collaboration Animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Navigation */
+.site-nav {
+  border-bottom: 1px solid #1a2a2a;
+  padding: 15px 0;
+  text-align: center;
+  background: #0a0a0a;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: #00cc66;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00ff88;
+}
+
+.nav-links a.current {
+  color: #00ff88;
+}
+
+/* Container Layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
+
+/* Header */
+.header {
+  background: #0a0a0a;
+  border-bottom: 1px solid #1a2a2a;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  box-shadow: inset 0 0 10px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+
+/* Buttons */
+.btn {
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn:hover {
+  background: #333;
+  border-color: #444;
+  color: #fff;
+}
+
+.btn-primary {
+  background: #333;
+  border-color: #444;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #444;
+  border-color: #555;
+}
+
+/* Main Content Area */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-pane, 
+.preview-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-pane {
+  border-right: 1px solid #1a2a2a;
+  position: relative;
+}
+
+/* Pane Headers */
+.pane-header {
+  background: linear-gradient(135deg, #0f1c1c 0%, #0a1515 100%);
+  padding: 10px 20px;
+  font-size: 0.9em;
+  color: #00cc66;
+  border-bottom: 1px solid #1a3535;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pane-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.pane-btn {
+  background: #0a0a0a;
+  color: #ccc;
+  border: 1px solid #333;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pane-btn:hover {
+  background: #222;
+  border-color: #444;
+  color: #fff;
+}
+
+/* Font size selectors removed - markdown provides native text sizing control */
+
+/* Editor */
+.editor-textarea {
+  flex: 1;
+  background: linear-gradient(135deg, #0f1c1c 0%, #0a1515 100%);
+  color: #e0e0e0;
+  border: none;
+  padding: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+/* Preview */
+.preview-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #0f1c1c 0%, #162626 100%);
+}
+
+/* Markdown Preview Styles */
+.preview-content h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #fff;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}
+
+.preview-content h2 {
+  font-size: 2em;
+  margin: 30px 0 15px;
+  color: #fff;
+}
+
+.preview-content h3 {
+  font-size: 1.5em;
+  margin: 25px 0 10px;
+  color: #fff;
+}
+
+.preview-content p {
+  margin-bottom: 15px;
+  line-height: 1.7;
+}
+
+.preview-content code {
+  background: rgba(0, 255, 136, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: #00ff88;
+}
+
+.preview-content pre {
+  background: linear-gradient(135deg, #0a1515 0%, #0f1c1c 100%);
+  border: 1px solid #1a3535;
+  border-radius: 4px;
+  padding: 15px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.preview-content pre code {
+  background: none;
+  padding: 0;
+  color: #e0e0e0;
+}
+
+.preview-content blockquote {
+  border-left: 4px solid #00cc66;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #bbb;
+  font-style: italic;
+  background: rgba(0, 204, 102, 0.05);
+  padding: 15px 20px;
+  border-radius: 4px;
+}
+
+.preview-content ul, 
+.preview-content ol {
+  margin-bottom: 20px;
+  padding-left: 30px;
+}
+
+.preview-content li {
+  margin-bottom: 5px;
+}
+
+.preview-content a {
+  color: #00ff88;
+  text-decoration: none;
+  border-bottom: 1px dotted #00cc66;
+}
+
+.preview-content a:hover {
+  border-bottom-style: solid;
+  color: #00cc66;
+}
+
+.preview-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.preview-content th, 
+.preview-content td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.preview-content th {
+  background: #222;
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  background: #0a0a0a;
+  border-top: 1px solid #1a2a2a;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 0.85em;
+  color: #666;
+}
+
+.footer a {
+  color: #888;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #aaa;
+}
+
+/* Modal Base */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal h3 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.modal p {
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.modal label {
+  color: #bbb;
+  font-size: 0.9em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.modal input[type="text"],
+.modal input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.modal button.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Templates */
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.template-btn {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.template-btn:hover {
+  border-color: #555;
+  background: #151515;
+}
+
+.template-btn strong {
+  color: #fff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.template-btn span {
+  color: #888;
+  font-size: 0.85em;
+}
+
+/* Character Count */
+.char-count {
+  color: #666;
+  font-size: 0.85em;
+}
+
+/* Format Toolbar */
+.format-toolbar {
+  position: absolute;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 5px;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.format-btn {
+  background: #333;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 5px 10px;
+  margin: 0 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s ease;
+}
+
+.format-btn:hover {
+  background: #444;
+  color: #fff;
+}
+
+/* Cheat Sheet */
+.cheat-sheet {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 350px;
+  max-height: 70vh;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  font-size: 0.85em;
+}
+
+.cheat-sheet h4 {
+  color: #88c0d0;
+  margin-bottom: 10px;
+}
+
+.cheat-sheet button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #00ff88, #00cc66);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+}
+
+.cheat-sheet button:hover {
+  background: linear-gradient(135deg, #00cc66, #00ff88);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.5);
+}
+
+.cheat-sheet-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5em;
+  transition: all 0.2s ease;
+  color: #ccc;
+}
+
+.cheat-sheet-toggle:hover {
+  background: #333;
+  border-color: #444;
+}
+
+/* Animations */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Collaboration */
+.collab-notification {
+  animation: slideIn 0.3s ease;
+}
+
+#peer-count {
+  background: rgba(78, 205, 196, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid #00ff88;
+  display: none; /* Hidden by default until collaboration starts */
+}
+
+/* Import Drop Zone */
+#import-drop-zone.dragover {
+  border-color: #00ff88;
+  background: rgba(78, 205, 196, 0.1);
+}
+
+/* Preview Empty State */
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 40px;
+}
+
+/* Paste Indicator */
+#pasteIndicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(136, 192, 208, 0.9);
+  color: #000;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1em;
+  z-index: 1000;
+  display: none;
+  animation: fadeInOut 1s ease;
+}
+
+/* Quick Access Code */
+.quick-access-code {
+  background: #333;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 1.1em;
+  color: #00ff88;
+}
+
+/* Hide mobile elements on desktop */
+.mobile-view-toggle,
+.mobile-toolbar,
+.mobile-swipe-trigger,
+.mobile-folder-panel {
+  display: none;
+}
+
+/* Desktop Folder Panel - Hidden until folder mode activated */
+.desktop-folder-panel {
+  display: none; /* Hidden by default, JS will show when folder mode active */
+  position: fixed;
+  top: 0;
+  left: -350px;
+  width: 350px;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+  border-right: 1px solid #333;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+  flex-direction: column;
+  z-index: 1000;
+  transition: left 0.3s ease;
+}
+
+.desktop-folder-panel.open {
+  display: flex;
+  left: 0;
+}
+
+/* Slide Arrow - Mobile-style >| with vertical line */
+.folder-slide-arrow {
+  position: fixed;
+  left: 0;
+  top: 60px; /* Start after header */
+  bottom: 60px; /* End before footer */
+  width: 20px;
+  background: transparent;
+  color: #00ff88;
+  display: none; /* Hidden until folder mode is active */
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.2s ease;
+}
+
+.folder-slide-arrow:before {
+  content: '▶';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: #00ff88;
+  text-shadow: 0 0 4px rgba(78, 205, 196, 0.5);
+}
+
+/* Change arrow direction when panel is open */
+body.desktop-folder-active .folder-slide-arrow:before {
+  content: '◀';
+}
+
+.folder-slide-arrow:hover:before {
+  color: #5fd9d0;
+  text-shadow: 0 0 6px rgba(95, 217, 208, 0.7);
+}
+
+/* Remove hover:after since we removed the vertical line */
+
+/* Active state - show when folder mode is active */
+.folder-slide-arrow.active {
+  display: block;
+}
+
+/* When collapsed (folder mode active but panel closed), move content 2px right */
+body.desktop-folder-mode .main-content,
+body.desktop-folder-mode .site-nav,
+body.desktop-folder-mode .header,
+body.desktop-folder-mode .footer {
+  margin-left: 2px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Push content when desktop folder panel is active */
+body.desktop-folder-active .main-content {
+  margin-left: 350px;
+  transition: margin-left 0.3s ease;
+}
+
+body.desktop-folder-active .site-nav,
+body.desktop-folder-active .header,
+body.desktop-folder-active .footer {
+  margin-left: 350px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Move slide arrow with content when panel is active */
+body.desktop-folder-active .folder-slide-arrow {
+  left: 350px;
+  transition: left 0.3s ease;
+}
+
+/* Mode Toggle Container - Grey box around Write/Code */
+.mode-toggle-container {
+  display: inline-flex;
+  background: #333;
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 0;
+}
+
+.desktop-folder-panel .folder-header {
+  padding: 20px 20px 16px 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.desktop-folder-panel .folder-header h3 {
+  color: #00ff88;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.desktop-folder-panel .close-folder-btn {
+  background: #333;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.desktop-folder-panel .close-folder-btn:hover {
+  background: #666;
+  color: #fff;
+}
+
+.desktop-folder-panel .folder-actions {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.desktop-folder-panel .folder-actions .btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.desktop-folder-panel .folder-actions .btn:hover {
+  background: #333;
+  border-color: #00ff88;
+  color: #fff;
+}
+
+/* Active state for folder button and other toggles */
+.btn.active {
+  background: #00ff88;
+  color: #000;
+  border-color: #00ff88;
+  font-weight: 600;
+}
+
+.btn.active:hover {
+  background: #5fd9d0;
+  color: #000;
+  border-color: #5fd9d0;
+}
+
+.desktop-folder-panel .folder-tree {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.desktop-folder-panel .folder-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  text-align: center;
+}
+
+.desktop-folder-panel .folder-empty div {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+.desktop-folder-panel .folder-empty p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.desktop-folder-panel .vault-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.desktop-folder-panel .vault-icon {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+.desktop-folder-panel .vault-setup h4 {
+  color: #00ff88;
+  margin-bottom: 12px;
+  font-size: 1.2em;
+}
+
+.desktop-folder-panel .vault-setup p {
+  color: #ccc;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.desktop-folder-panel .vault-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.desktop-folder-panel .vault-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.desktop-folder-panel .vault-option-btn:hover {
+  background: #333;
+  border-color: #00ff88;
+  color: #fff;
+}
+
+.desktop-folder-panel .vault-option-btn span {
+  font-size: 1.5em;
+}
+
+.desktop-folder-panel .vault-option-btn div {
+  flex: 1;
+}
+
+.desktop-folder-panel .vault-option-btn strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #fff;
+}
+
+.desktop-folder-panel .vault-option-btn small {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.desktop-folder-panel .folder-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  text-align: center;
+}
+
+.desktop-folder-panel .folder-loading div {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+/* Folder bottom section for path button */
+.desktop-folder-panel .folder-bottom {
+  padding: 20px;
+  border-top: 1px solid #333;
+  margin-top: auto;
+}
+
+.desktop-folder-panel .path-btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.desktop-folder-panel .path-btn:hover {
+  background: #00ff88;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+/* ============================================
+   UNIFIED INTERFACE FOR DESKTOP
+   ============================================ */
+
+/* Remove old mode-toggle-group - replaced with mode-toggle-container */
+
+/* Make Write/Code buttons smaller inside the square container */
+.mode-btn {
+  min-width: 48px;
+  padding: 6px 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 1px solid #444;
+  background: #222;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+  margin: 0;
+}
+
+.mode-btn:hover {
+  background: #333;
+  color: #ccc;
+  border-color: #444;
+}
+
+/* Active state for Write/Code mode buttons */
+.mode-btn.active {
+  background: #00ff88;
+  color: #000;
+  border-color: #00ff88;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(78, 205, 196, 0.3);
+}
+
+.mode-btn.active:hover {
+  background: #5fd9d0;
+  color: #000;
+  border-color: #5fd9d0;
+}
+
+/* First button (Write) */
+.mode-btn:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+/* Last button (Code) */
+.mode-btn:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+
+/* Unified Editor */
+.unified-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  width: 100%; /* Ensure full width */
+  min-height: 0; /* Ensure flex shrinking works properly */
+  transition: opacity 0.2s ease; /* Smooth transition when switching modes */
+}
+
+.unified-editor[style*="display: none"] {
+  display: none !important; /* Completely hide when not active */
+}
+
+.unified-editor[style*="display: block"] {
+  display: flex !important; /* Ensure proper flex display when active */
+  opacity: 1;
+}
+
+.unified-editor .editor-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  border: none;
+  border-radius: 0;
+  background: #111;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+  min-height: 400px;
+  height: calc(100vh - 150px); /* Take most of available height */
+}
+
+.unified-editor .preview-content {
+  flex: 1;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  background: #0a0a0a;
+  color: #e0e0e0;
+  overflow-y: auto;
+  min-height: 400px;
+}
+
+/* DIFF Interface */
+.diff-interface {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%; /* Ensure full width */
+  min-height: 0; /* Ensure flex shrinking works properly */
+  transition: opacity 0.2s ease; /* Smooth transition when switching modes */
+}
+
+.diff-interface[style*="display: none"] {
+  display: none !important; /* Completely hide when not active */
+}
+
+.diff-interface[style*="display: block"] {
+  display: flex !important; /* Ensure proper flex display when active */
+  opacity: 1;
+}
+
+.diff-container {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.diff-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.diff-box-header {
+  background: #111;
+  padding: 10px 20px;
+  font-size: 0.9em;
+  color: #00ff88;
+  border-bottom: 1px solid #1a2a2a;
+  font-weight: 600;
+}
+
+.diff-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 2px solid #1a2a2a;
+  border-radius: 0 0 8px 8px;
+  background: #111;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+  min-height: 400px; /* Ensure decent height */
+  height: calc(100vh - 200px); /* Take most of viewport height */
+}
+
+.diff-textarea:focus {
+  border-color: #00ff88;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
+/* Visual Diff Display */
+.diff-visual {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.diff-visual-header {
+  background: #111;
+  padding: 10px 20px;
+  font-size: 0.9em;
+  color: #00ff88;
+  border-bottom: 1px solid #1a2a2a;
+  font-weight: 600;
+}
+
+.diff-visual-content {
+  flex: 1;
+  padding: 20px;
+  background: #0a0a0a;
+  border: 1px solid #1a2a2a;
+  border-radius: 0 0 8px 8px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px); /* Ensure it doesn't exceed viewport */
+  min-height: 400px; /* Minimum reasonable height */
+}
+
+.diff-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.diff-line {
+  padding: 6px 12px;
+  margin: 3px 0;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-line.added {
+  background: rgba(34, 197, 94, 0.15);
+  border-left: 4px solid #22c55e;
+}
+
+.diff-line.removed {
+  background: rgba(239, 68, 68, 0.15);
+  border-left: 4px solid #ef4444;
+}
+
+.diff-line.unchanged {
+  background: transparent;
+  color: #ccc;
+}
+
+/* Word-level highlighting within diff lines */
+.word-removed {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fef2f2;
+  padding: 2px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.word-added {
+  background: rgba(34, 197, 94, 0.3);
+  color: #f0fdf4;
+  padding: 2px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.diff-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 60px;
+}
+
+.diff-empty div {
+  font-size: 4em;
+  margin-bottom: 20px;
+}
+
+/* Code Preview Styles */
+.code-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #111;
+  border-bottom: 1px solid #333;
+  border-radius: 8px 8px 0 0;
+}
+
+.language-badge {
+  background: #00ff88;
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.html-preview-container {
+  padding: 20px;
+  background: #0a0a0a;
+}
+
+.language-detection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 60px;
+  text-align: center;
+}
+
+.language-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+}
+
+.language-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.language-name {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #00ff88;
+}
+
+.language-version {
+  font-size: 1.1em;
+  color: #ccc;
+  background: #222;
+  padding: 6px 16px;
+  border-radius: 20px;
+  align-self: center;
+}
+
+.syntax-note {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #ffc107;
+  max-width: 400px;
+}
+
+/* Legacy panes - hidden by default, shown when needed */
+.legacy-panes {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.legacy-panes .editor-pane,
+.legacy-panes .preview-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.legacy-panes .editor-pane {
+  border-right: 1px solid #1a2a2a;
+}
+
+.unified-editor::-webkit-scrollbar {
+  width: 12px;
+}
+
+.unified-editor::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+}
+
+.unified-editor::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00ff88, #00cc66);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.unified-editor::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #00cc66, #00ff88);
+  box-shadow: 0 0 8px rgba(78, 205, 196, 0.5);
+}/* Code-specific styles moved to /code/code-specific-styles.css */

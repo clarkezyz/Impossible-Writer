@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impossible Writer - Collaborative Markdown Editor</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  
+  <!-- External Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/diff@5.1.0/dist/diff.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <!-- Conditional CSS Loading -->
+  <script>
+    // Load appropriate CSS based on device
+    const isMobile = window.innerWidth <= 768;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = isMobile ? 'style_mobile.css' : 'style_desktop.css';
+    document.head.appendChild(link);
+    
+    // Load mobile JS if needed
+    if (isMobile) {
+      const script = document.createElement('script');
+      script.src = 'js/mobile.js';
+      document.head.appendChild(script);
+    }
+  </script>
+  
+  <!-- Core JavaScript -->
+  <script src="js/enhanced-templates.js"></script>
+  <script src="js/collaborative-engine.js"></script>
+  <script src="js/collaboration.js"></script>
+  <script src="js/import-export.js"></script>
+  <script src="js/vault-manager.js"></script>
+  <script src="js/vault-import-export.js"></script>
+  <script src="js/media-embedder.js"></script>
+  <script src="js/emoji-embedder.js"></script>
+  <script src="js/vault-search.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/folder-manager.js"></script>
+  <script src="js/mode-manager.js"></script>
+</head>
+<body>
+  <!-- Navigation removed for standalone version -->
+
+  <div class="container">
+    <!-- Desktop Header (Unified with Mobile) -->
+    <header class="header">
+      <div class="logo">
+        IMPOSSIBLE WRITER
+      </div>
+      <div class="header-actions">
+        <button class="btn" onclick="toggleFullscreen()">⛶ Full</button>
+        <button class="btn" onclick="toggleFolderPanel()" id="desktop-folder-btn">📁 Folder</button>
+        <div class="mode-toggle-container">
+          <button class="btn mode-btn active" onclick="setMarkdownMode()" id="desktop-md-mode-btn">md</button>
+          <button class="btn mode-btn" onclick="setRichMode()" id="desktop-rich-mode-btn">rich</button>
+        </div>
+        <button class="btn" onclick="toggleTextColoring()" id="text-color-toggle">🎨 Colors</button>
+        <button class="btn" onclick="smartRoomAction()" id="desktop-room-btn">🌐 Room</button>
+        <button class="btn" onclick="showImportModal()">📂 Import</button>
+        <button class="btn" onclick="showExportModal()">📄 Export</button>
+        <button class="btn" onclick="clearTextWithWarning()">🗑️ Clear</button>
+        <span id="peer-count"></span>
+      </div>
+    </header>
+
+    <!-- Mobile View Toggle - Removed hamburger menu per user request -->
+
+    <!-- Desktop Folder Panel (Left Side) -->
+    <div class="desktop-folder-panel" id="desktopFolderPanel">
+      <div class="folder-header">
+        <h3>📁 Local Vault</h3>
+        <button class="close-folder-btn" onclick="folderManager.closeFolderPanel()">←</button>
+      </div>
+      <div class="folder-actions">
+        <button class="btn" onclick="selectLocalFolder()">📂 Open Folder</button>
+        <button class="btn" onclick="createNewFile()">📄 New File</button>
+        <button class="btn" onclick="createNewFolder()">📁 New Folder</button>
+      </div>
+      <div class="folder-tree" id="desktopFolderTree">
+        <div class="folder-empty">
+          <div>📂</div>
+          <p>Select a folder to browse your local markdown files on desktop</p>
+        </div>
+      </div>
+      <div class="folder-bottom">
+        <button class="btn path-btn" onclick="showVaultPath()">📍 Relative Path</button>
+      </div>
+    </div>
+
+    <!-- Desktop Slide Arrow -->
+    <div class="folder-slide-arrow" id="desktopSlideArrow" onclick="folderManager.openFolderPanel()"></div>
+
+    <!-- Mobile Folder Panel (Left Side) - Hidden by default -->
+    <div class="mobile-folder-panel" id="folderPanel" style="display: none;">
+      <div class="folder-header">
+        <h3>📁 Local Vault</h3>
+      </div>
+      <div class="folder-actions">
+        <button class="btn" onclick="selectLocalFolder()">📂 Open Folder</button>
+        <button class="btn" onclick="createNewFile()">📄 New File</button>
+        <button class="btn" onclick="createNewFolder()">📁 New Folder</button>
+      </div>
+      <div class="folder-tree" id="folderTree">
+        <div class="folder-empty">
+          <div>📂</div>
+          <p>Select a folder to browse your local markdown files on mobile</p>
+        </div>
+      </div>
+      <div class="folder-bottom">
+        <button class="btn path-btn" onclick="showVaultPath()">📍 Relative Path</button>
+      </div>
+    </div>
+    
+    <!-- Left Swipe Trigger (same as right toolbar pattern) -->
+    <div class="mobile-left-swipe-trigger" id="leftSwipeTrigger"></div>
+
+    <!-- Mobile Swipe Toolbar (Right Side) -->
+    <div class="mobile-toolbar">
+      <button class="btn" onclick="toggleFullscreen()">⛶ Full</button>
+      <button class="btn" onclick="toggleFolderPanel()" id="mobile-folder-btn">📁 Folder</button>
+      <div class="mode-toggle-container">
+        <button class="btn mode-btn active" onclick="setMarkdownMode()" id="mobile-md-mode-btn">md</button>
+        <button class="btn mode-btn" onclick="setRichMode()" id="mobile-rich-mode-btn">rich</button>
+      </div>
+      <button class="btn" onclick="toggleDiffMode()" id="diff-mode-btn">🔍 DIFF</button>
+      <button class="btn" onclick="toggleTextColoring()" id="mobile-text-color-toggle">🎨 Colors</button>
+      <button class="btn" onclick="smartRoomAction()" id="mobile-room-btn">🌐 Room</button>
+      <button class="btn" onclick="quickImport()">📂 Import</button>
+      <button class="btn" onclick="showExportModal()">📄 Export</button>
+      <button class="btn" onclick="clearTextWithWarning()">🗑️ Clear</button>
+      <button class="btn tips-btn" onclick="toggleCheatSheet()">💡 Tips</button>
+    </div>
+    
+    <!-- Swipe Trigger -->
+    <div class="mobile-swipe-trigger"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Single Editor Mode (New Unified Interface) -->
+      <div class="unified-editor" id="unifiedEditor">
+        <div class="pane-header">
+          <span id="mode-indicator">WRITE MODE</span>
+          <span id="code-superpower-status" class="superpower-inactive" style="display: none; font-size: 10px; color: #666; margin-left: 10px;"></span>
+          <div class="pane-controls">
+            <button class="pane-btn" onclick="showTemplates()">📄 Templates</button>
+            <button class="pane-btn" onclick="insertTable()">📊 Table</button>
+            <button onclick="toggleWordWrap()" id="wrapToggle" class="pane-btn">📄 Wrap</button>
+            <span class="char-count">0 chars, 0 words</span>
+          </div>
+        </div>
+        <textarea id="editor" class="editor-textarea" placeholder="👻 Start typing to replace this content...
+
+# Welcome to Impossible Writer
+
+**Quick Start:** [Clear for new page](javascript:clearTextWithWarning()) • [📁 Folder for new vault](javascript:toggleFolderPanel())
+
+---
+
+## 🎯 **What You're Using**
+
+**Impossible Writer** is a collaborative markdown editor that achieves the impossible trinity: real-time P2P collaboration, complete privacy, and true portability. Zero login, zero tracking, zero data harvesting. Your content stays on your device.
+
+---
+
+## 🚀 **Core Features**
+
+### **📝 Writing Modes**
+- **Markdown Mode:** Raw markdown editing with live syntax
+- **Rich Text Mode:** WYSIWYG editing with instant preview
+
+### **🗃️ Vault System**
+- **Drag & Drop Media:** Drop images/videos directly into editor
+- **Smart Asset Management:** Auto-saves as `imageYYMMDD-SS.png`
+- **Quick Embeds:** Type `[[` for files/links, `::` for emojis
+- **Vault Search:** Ctrl+Shift+F to find connections across content
+- **Portable Vaults:** Export complete vault as ZIP with all assets
+- **Cross-Platform:** Import vault on any device, everything intact
+
+### **🌐 Real-Time Collaboration**
+- **Private P2P Rooms:** WebRTC-based, no server storage
+- **Live Editing:** See changes instantly, cursor tracking
+- **Media Sharing:** Assets sync to all collaborators
+- **Color Coding:** Toggle to see who wrote what
+
+### **📁 Import/Export Engine**
+- **Import:** Markdown (.md), Complete ZIP vaults
+- **Export:** Markdown (.md), Complete Vault ZIP
+- **Vault Export:** Complete ZIP with all media preserved
+- **No Lock-in:** Your markdown works everywhere
+
+---
+
+## ⚡ **Quick Actions**
+
+### **Getting Started**
+1. **Start Writing:** Just start typing in markdown
+2. **Add Media:** Drag images/videos into the editor
+3. **Switch Views:** Toggle between markdown and rich text
+4. **Export:** Download as markdown or complete vault ZIP
+
+### **Collaboration**
+1. **Create Room:** Click Room button, enter name & password
+2. **Share Credentials:** Others join with same name & password
+3. **Edit Together:** Real-time sync, see all changes live
+4. **Export Vault:** Everyone gets complete copy with assets
+
+### **Vault Management**
+1. **Drop Media:** Images auto-save to vault structure
+2. **Quick Embed:** Type [[ anywhere for instant media/link insertion
+3. **Search Vault:** Ctrl+Shift+F to discover content connections
+4. **Export Vault:** ZIP includes all content and assets
+5. **Import Vault:** Restore on any device, merge or overwrite
+6. **Share:** Send ZIP file, perfect portability
+
+---
+
+## 📝 **Markdown Syntax Reference**
+
+| Syntax | Result |
+|--------|---------|
+| `**bold text**` | **bold text** |
+| `*italic text*` | *italic text* |
+| `~~strikethrough~~` | ~~strikethrough~~ |
+| ```code``` | `code` |
+| `[link](url)` | [link](url) |
+| `![image](path)` | ![image](path) |
+| `# Heading 1` | # Heading 1 |
+| `## Heading 2` | ## Heading 2 |
+| `- List item` | • List item |
+| `1. Numbered` | 1. Numbered |
+| `> Quote` | > Quote |
+
+---
+
+## 💡 **Pro Tips**
+
+- **Rich Text Paste:** Copy from anywhere, auto-converts to markdown
+- **Live Preview Editing:** Edit directly in preview pane
+- **Quick Media Embed:** Type `[[` anywhere to embed files or web links
+- **Asset Insertion:** Dropped media auto-inserts at cursor position
+- **Vault Portability:** Export vault, work anywhere, import back
+- **Offline Ready:** Works completely without internet
+- **No Limits:** No file size restrictions, no storage costs
+
+---
+
+## 🔒 **Privacy & Security**
+
+- **Zero Server Storage:** Your content never hits our servers
+- **Local Processing:** Everything happens in your browser
+- **P2P Collaboration:** Direct connections, no middleman
+- **Complete Control:** You own your data, always
+- **No Tracking:** No analytics, no telemetry, no data collection
+
+---
+
+## 🎨 **Interface Guide**
+
+### **Toolbar Functions**
+- **📄 Templates:** Pre-built document structures
+- **📊 Table:** Insert markdown tables
+- **🎨 Colors:** Show collaboration authorship
+- **🌐 Room:** Create/join collaboration rooms
+- **📂 Import:** Bring in markdown documents and vaults
+- **📄 Export:** Save as markdown or vault ZIP
+
+### **Keyboard Shortcuts**
+- **Ctrl+B:** Bold text
+- **Ctrl+I:** Italic text
+- **Ctrl+K:** Insert link
+- **Ctrl+S:** Save content
+- **Ctrl+Z:** Undo
+- **Ctrl+Y:** Redo
+- **Ctrl+Shift+F:** Search vault
+- **Type [[:** Quick media embed
+- **Type :::** Quick emoji picker
+
+---
+
+## 🚀 **What Makes This Impossible**
+
+**The Impossible Trinity Achieved:**
+- ✅ **Real-time collaboration** without servers
+- ✅ **Complete privacy** without isolation
+- ✅ **Full portability** without compromise
+
+**Revolutionary Breakthroughs:**
+- **Portable Vault System:** Self-contained with all assets
+- **True P2P Collaboration:** Enterprise features, zero cost
+- **Markdown-First Philosophy:** Universal compatibility without lock-in
+- **Adaptive Interface:** Full functionality on any device
+
+---
+
+## 🎯 **Ready to Start?**
+
+**For Simple Documents:** [Click Clear to start fresh](javascript:clearTextWithWarning())
+
+**For Media-Rich Vaults:** [Click Folder to begin a new vault](javascript:toggleFolderPanel())
+
+**For Collaboration:** Click Room button in toolbar to create a shared workspace
+
+---
+
+*Welcome to the future of writing. Start creating something impossible.*" spellcheck="true"></textarea>
+        <div class="preview-content" id="preview" style="display: none;" contenteditable="true">
+          <div class="preview-empty" id="previewEmpty">
+            <div>📝</div>
+            <h3>Preview appears here</h3>
+            <p>Toggle to see formatted output or paste rich text to convert to markdown</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legacy Panes (Hidden in new interface, shown only for desktop fallback) -->
+      <div class="legacy-panes" style="display: none;">
+        <!-- Editor Pane -->
+        <div class="editor-pane">
+          <div class="pane-header">
+            <span>MARKDOWN</span>
+            <div class="pane-controls">
+              <button class="pane-btn" onclick="showTemplates()">📄 Templates</button>
+              <button class="pane-btn" onclick="insertTable()">📊 Table</button>
+              <button onclick="toggleWordWrap()" id="wrapToggleLegacy" class="pane-btn">📄 Wrap</button>
+              <button onclick="toggleEditorFullscreen()" id="editorFullscreenLegacy" class="pane-btn">⛶ Full</button>
+              <span class="char-count">0 chars, 0 words</span>
+            </div>
+          </div>
+          <textarea id="editorLegacy" class="editor-textarea"></textarea>
+        </div>
+
+        <!-- Preview Pane -->
+        <div class="preview-pane">
+          <div class="pane-header">
+            <span>FORMATTED</span>
+            <div class="pane-controls">
+              <button onclick="togglePreviewFullscreen()" id="previewFullscreen" class="pane-btn">⛶ Full</button>
+            </div>
+          </div>
+          <div class="preview-content" id="previewLegacy">
+          <div class="preview-empty" id="previewEmpty">
+            <div>📝</div>
+            <h3>Preview appears here</h3>
+            <p>Type markdown in the editor to see formatted output, or click here and paste rich text to convert to markdown.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <strong>Impossible Writer</strong> — Collaborative Markdown Editor ·
+      <a href="https://github.com/clarkezyz/impossible-writer" target="_blank" style="color: #666;">GitHub</a>
+    </footer>
+  </div>
+
+  <!-- Templates Modal -->
+  <div class="modal" id="templatesModal">
+    <div class="modal-content">
+      <h3>Choose a Template</h3>
+      <div class="templates-grid">
+        <button class="template-btn" onclick="loadTemplate('swot')">
+          <strong>SWOT Analysis</strong>
+          <span>Strategic analysis with extras</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('proscons')">
+          <strong>Pros & Cons</strong>
+          <span>Decision framework with scoring</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('journal')">
+          <strong>Daily Journal</strong>
+          <span>Reflection with gratitude & growth</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('socialmedia')">
+          <strong>Social Media</strong>
+          <span>Collaborative post planning</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('finance')">
+          <strong>Budget & Finance</strong>
+          <span>Financial planning with tracking</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('meeting')">
+          <strong>Meeting Notes</strong>
+          <span>Structured meeting template</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('project')">
+          <strong>Project Brief</strong>
+          <span>Technical project outline</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('blog')">
+          <strong>Blog Post</strong>
+          <span>Article with sections</span>
+        </button>
+        <button class="template-btn" onclick="loadTemplate('readme')">
+          <strong>README</strong>
+          <span>Software documentation</span>
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeTemplates()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copy Modal -->
+  <div class="modal" id="copyModal">
+    <div class="modal-content">
+      <h3>Copy Content</h3>
+      <button onclick="closeCopyModal()">×</button>
+      <button class="btn btn-primary" onclick="copyMarkdownFromModal()">
+        📄 <strong>Copy Markdown</strong><br>
+        <small>Raw markdown text</small>
+      </button>
+      <button class="btn btn-primary" onclick="copyHTMLFromModal()">
+        📋 <strong>Copy HTML</strong><br>
+        <small>Formatted HTML code</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal" id="exportModal">
+    <div class="modal-content">
+      <h3>Export Document</h3>
+      <button class="btn btn-primary" onclick="exportFormat('markdown')">
+        📄 <strong>Markdown (.md)</strong><br>
+        <small>Export as markdown file</small>
+      </button>
+      <button class="btn btn-primary" onclick="exportVault()">
+        📦 <strong>Vault (ZIP)</strong><br>
+        <small>Export as portable vault archive</small>
+      </button>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeExportModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room Modals -->
+  <div class="modal" id="createRoomModal">
+    <div class="modal-content">
+      <h3>Create Collaborative Room</h3>
+      <button onclick="closeCreateRoomModal()">×</button>
+      <p>Create a secure room for real-time collaboration. Share the link with others to edit together.</p>
+      <label>Room Name</label>
+      <input type="text" id="room-number" placeholder="e.g., writers-lounge">
+      <label>Password</label>
+      <input type="password" id="room-password" placeholder="e.g., P4ssW0rD">
+      <div class="modal-actions">
+        <button class="btn" onclick="closeCreateRoomModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="createRoom()">🎉 Create Room</button>
+      </div>
+      <p>⚠️ Rooms automatically expire after 24 hours. All participants keep their local copy when the room closes.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="joinRoomModal">
+    <div class="modal-content">
+      <h3>Join Collaborative Room</h3>
+      <button onclick="closeJoinRoomModal()">×</button>
+      <p>Enter the room credentials to join an existing collaboration session.</p>
+      <label>Room Name</label>
+      <input type="text" id="join-room-number" placeholder="e.g., writers-lounge">
+      <label>Password</label>
+      <input type="password" id="join-room-password" placeholder="e.g., P4ssW0rD">
+      <div class="modal-actions">
+        <button class="btn" onclick="closeJoinRoomModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="joinRoom()">🔗 Join Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div class="modal" id="importModal">
+    <div class="modal-content">
+      <h3>Import Document</h3>
+      <div id="import-drop-zone">
+        <div>📂</div>
+        <h4>Drop file here or click to browse</h4>
+        <p>Supports: .md (markdown) and .zip (vault archives)</p>
+        <input type="file" id="import-file-input" accept=".md,.zip">
+      </div>
+      <div id="import-status">
+        <span id="import-status-icon"></span>
+        <span id="import-status-text"></span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeImportModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Format Toolbar -->
+  <div class="format-toolbar" id="formatToolbar">
+    <button class="format-btn" onclick="formatSelection('bold')" title="Bold">B</button>
+    <button class="format-btn" onclick="formatSelection('italic')" title="Italic">I</button>
+    <button class="format-btn" onclick="formatSelection('code')" title="Inline Code">`&lt;&gt;`</button>
+    <button class="format-btn" onclick="formatSelection('link')" title="Link">🔗</button>
+    <button class="format-btn" onclick="showMediaPicker()" title="Add Media (or type [[)">📎</button>
+  </div>
+
+
+  <!-- Cheat Sheet -->
+  <div class="cheat-sheet" id="cheatSheet">
+    <h4>Impossible Writer Guide</h4>
+    <button onclick="closeCheatSheet()">×</button>
+    
+    <h5>🎯 Modes</h5>
+    <strong>Write Mode:</strong> Markdown + Rich Text<br>
+    <strong>Rich Text Mode:</strong> Visual editing with live preview<br>
+    
+    <h5>📝 Markdown Syntax</h5>
+    <code>**bold**</code> → <strong>bold</strong><br>
+    <code>*italic*</code> → <em>italic</em><br>
+    <code>~~strike~~</code> → <del>strike</del><br>
+    <code>`code`</code> → <code>code</code><br>
+    <code>[link](url)</code> → <a href="#">link</a><br>
+    <code># Heading</code>, <code>## Subheading</code><br>
+    <code>- List item</code>, <code>1. Numbered</code><br>
+    <code>> Quote</code>, <code>```code block```</code><br>
+    
+    <h5>⚡ Features</h5>
+    • <strong>Toggle:</strong> Switch views based on mode<br>
+    • <strong>Folder:</strong> Browser vault auto-created<br>
+    • <strong>Room:</strong> Real-time collaboration<br>
+    • <strong>Colors:</strong> Show who wrote what (in collaboration)<br>
+    • <strong>Import:</strong> MD, HTML, DOCX, RTF, PDF, ZIP vaults<br>
+    • <strong>Export:</strong> Multiple formats + Vault ZIP<br>
+
+    <h5>🗃️ Vault System</h5>
+    • <strong>Drag & drop:</strong> Drop images/videos into editor<br>
+    • <strong>Auto-save:</strong> Assets saved to vault with smart naming<br>
+    • <strong>Smart naming:</strong> Assets use imageYYMMDD-SS format<br>
+    • <strong>ZIP export:</strong> Complete vault with all assets<br>
+    • <strong>ZIP import:</strong> Restore vault on any device<br>
+    • <strong>Asset sync:</strong> Media files shared in collaboration<br>
+
+    <h5>📎 Media Embedding</h5>
+    • <strong>Type [[:</strong> Instant media embedding popup<br>
+    • <strong>File upload:</strong> Images, videos, audio, documents<br>
+    • <strong>Web links:</strong> Any URL - auto-detects type<br>
+    • <strong>Smart titles:</strong> Recognizes YouTube, GitHub, etc.<br>
+    
+    <h5>🌐 Collaboration</h5>
+    • <strong>Create room:</strong> Enter name and password<br>
+    • <strong>Join room:</strong> Enter same name and password<br>
+    • If room exists, you'll join it automatically<br>
+    • Colors button toggles user text highlighting<br>
+    
+    <h5>💡 Pro Tips</h5>
+    • Paste rich text → Auto-converts to markdown<br>
+    • Edit in preview → Updates markdown live<br>
+    • DIFF mode → Compare any two texts<br>
+    • Type [[ anywhere → Instant media embedding<br>
+    • Ctrl+Shift+F → Search entire vault<br>
+    • Dropped media → Inserts markdown link at cursor<br>
+    • Vault export → Packages everything for portability<br>
+    • Auto-saves every 30 seconds<br>
+    • Works completely offline!
+  </div>
+</body>
+</html>
